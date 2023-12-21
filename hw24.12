@@ -1,0 +1,85 @@
+create database salam
+
+create table People(
+                       [Id] int primary key identity(1, 1),
+                       [Name] nvarchar(30) NOT NULL,
+                       [Surname] nvarchar(30) NOT NULL,
+                       [Age] int NOT NULL check (Age >= 14 and Age < 100)
+);
+
+
+create table Employee(
+                         [Id] int primary key identity(1, 1),
+                         [Salary] smallmoney NOT NULL check ([Salary] >= 300),
+                         [Experience] int NOT NULL check ([Experience] >= 0)
+);
+
+create table Faculty(
+                        [Id] int primary key identity(1, 1),
+                        [Name] nvarchar(30) NOT NULL
+);
+
+create table Students(
+                         [Id] int primary key identity(1, 1),
+                         [PersonId] int foreign key references People(Id)
+);
+
+create table Teachers(
+                         [Id] int primary key identity(1, 1),
+                         [PersonId] int foreign key references People(Id),
+                         [EmployeeId] int foreign key references Employee(Id)
+);
+
+
+create table Groups(
+                       [Id] int primary key identity(1, 1),
+                       [Name] nvarchar(30) NOT NULL,
+                       [Course] int NOT NULL check ([Course] >= 1 and [Course] <= 6),
+                       [FacultyId] int foreign key references Faculty(Id)
+);
+
+create table GroupData(
+                          [Id] int primary key identity(1, 1),
+                          [StudentId] int foreign key references Students(Id),
+                          [GroupId] int foreign key references Groups(Id)
+);
+
+create table StudyPlan(
+                          [Id] int primary key identity(1, 1),
+                          [TeacherId] int foreign key references Teachers(Id),
+                          [GroupId] int foreign key references Groups(Id)
+);
+
+
+
+insert into People([Name], [Surname], [Age]) values(N'Anver', N'Mamedov', 19);
+insert into People([Name], [Surname], [Age]) values(N'Bakhtiar', N'Mirzoev', 17);
+insert into People([Name], [Surname], [Age]) values(N'Yusif', N'Bayramov', 20);
+insert into People([Name], [Surname], [Age]) values(N'Yusif', N'Melikov', 16);
+insert into People([Name], [Surname], [Age]) values(N'Nilay', N'Aliyeva', 16);
+insert into People([Name], [Surname], [Age]) values(N'Qariba', N'Dadasheva', 19);
+insert into People([Name], [Surname], [Age]) values(N'Tatyana', N'Ermakova', 21);
+insert into People([Name], [Surname], [Age]) values(N'Maga', N'Farmanov', 23);
+insert into People([Name], [Surname], [Age]) values(N'Afqan', N'Maksudlu',16 );
+insert into People([Name], [Surname], [Age]) values(N'Vaqif', N'Aliyev', 16);
+insert into People([Name], [Surname], [Age]) values(N'Alina', N'Orujeva', 16);
+insert into People([Name], [Surname], [Age]) values(N'Xalil', N'Oruclu', 16);
+insert into People([Name], [Surname], [Age]) values(N'Eldaniz', N'Yolchuev', 20);
+insert into People([Name], [Surname], [Age]) values(N'Murad', N'Afandiyev', 17);
+insert into People([Name],[Surname],[Age]) values (N'Elvin',N'Azimov',22)
+insert into People([Name],[Surname],[Age]) values (N'Cavid',N'Atamoglanov',23)
+insert into People([Name],[Surname],[Age]) values (N'Namiq',N'Rasullu',25)
+insert into People([Name],[Surname],[Age]) values (N'Nadir',N'Zamanov',40)
+
+insert  into Employee ([Salary],[Experience]) values(2000,5);
+insert  into Employee ([Salary],[Experience]) values(1880,2);
+insert  into Employee ([Salary],[Experience]) values(2200,6);
+insert  into Employee ([Salary],[Experience]) values(2750,8);
+
+insert into Faculty([Name]) values (N'Computer science')
+insert into Faculty([Name]) values (N'Cyber security')
+
+
+insert into  Students ([PersonId])
+select top 15 [Id] from People;
+
